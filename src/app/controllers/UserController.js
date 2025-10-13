@@ -14,11 +14,11 @@ class UserController {
 
     try {
       // 🔍 Validate request data
-      await schema.validate(req.body, { abortEarly: false, strict: true });
+      await schema.validate(req.body, { abortEarly:false, strict:true });
 
       const { name, email, password, admin } = req.body;
 
-      // 📧 Check for existing user
+      // 📧 Check for existing user email
       const existingUser = await User.findOne({ where: { email } });
 
       if (existingUser) {
