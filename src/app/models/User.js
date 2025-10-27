@@ -37,6 +37,7 @@ class User extends Model {
         timestamps: true, // ativa created_at e updated_at automaticamente
       }
     );
+    return this;
   }
 }
 

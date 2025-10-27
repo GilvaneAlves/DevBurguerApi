@@ -13,7 +13,11 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, authConfig.secret);
 
-    req.userId = decoded.id; // Se quiser usar o ID depois
+
+    console.log(decoded)
+    req.userId = decoded.id; 
+    req.userIsAdmin = decoded.admin;
+
     return next();
   } catch (error) {
     return res.status(401).json({ error: 'Token invalid' });

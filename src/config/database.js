@@ -1,4 +1,5 @@
-module.exports = {
+// Configuração do Sequelize - PostgreSQL
+export default {
   dialect: 'postgres',
   host: 'localhost',
   port: 5432,
