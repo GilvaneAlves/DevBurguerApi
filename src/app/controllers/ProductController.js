@@ -1,5 +1,5 @@
 import * as Yup from 'yup'; // Biblioteca de validação
-
+import Product from '../models/Product.js';
 
 class ProductController {
     async store(request, response) {
@@ -16,7 +16,17 @@ class ProductController {
             return response.status(400).json({ error: validationError.errors });
         }
 
-        return response.status(201).json({ ok: true });
+        const { name, price, category } = request.body;
+        const { filename } = request.file;
+
+        const newProduct = await Product.create({
+            name,
+            price,
+            category,
+            path: filename,
+        });
+
+        return response.status(201).json({ newProduct });
     }
 }
 
