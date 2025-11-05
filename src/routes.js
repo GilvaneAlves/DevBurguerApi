@@ -21,7 +21,7 @@ routes.post('/session', SessionController.store); // Login
 routes.use(authMidleware); // Aplica o middleware de autenticação para as rotas abaixo
 routes.post('/products', upload.single('file'), ProductController.store); // Criar produto
 routes.get('/products', ProductController.index); // Listar produtos
-
+// Categorias
 routes.post('/categories', CategoryController.store); // Criar categoria
 routes.get('/categories', CategoryController.index); // Listar categorias
 
