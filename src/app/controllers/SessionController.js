@@ -1,6 +1,8 @@
 import * as Yup from 'yup'; // Biblioteca de validação
 import User from '../models/User.js'; // Modelo Sequelize do usuário
 import bcrypt from 'bcryptjs'; // Para criptografar a senha
+import jwt from 'jsonwebtoken'; // Para gerar tokens JWT
+import authConfig from '../../config/auth.js'; // Configurações de autenticação
 
 class SessionController {
     async store(request, response) {
@@ -38,13 +40,16 @@ class SessionController {
         if (!isPasswordValid) {
             return emailOrPasswordIncorrect();
         }
-
+        const token = jwt.sign({ id: existingUser.id }, authConfig.secret, {
+            expiresIn: authConfig.expiresIn,
+        })
         // Se chegou aqui, login foi bem-sucedido
         return response.status(200).json({
             id: existingUser.id,
             name: existingUser.name,
             email: existingUser.email,
             admin: existingUser.admin,
+            token,
         });
     }
 }
