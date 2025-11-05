@@ -4,20 +4,21 @@ import SessionController from './app/controllers/SessionController.js';
 import ProductController from './app/controllers/ProductController.js';
 import multer from 'multer';
 import multerConfig from './config/multer.cjs';
-
+import authMidleware from './middlewares/auth.js';
 
 
 const routes = new Router();
 
+// Configuração do multer
 const upload = multer({ storage: multerConfig.Storage });
 
-routes.post('/users', UserController.store);
+// Usuários
+routes.post('/users', UserController.store); // Criar usuário
+routes.post('/session', SessionController.store); // Login
 
-routes.post('/session', SessionController.store);
-
-routes.post('/products', upload.single('file'), ProductController.store);
-
-routes.get('/products', ProductController.index)
-
+// Produtos
+routes.use(authMidleware); // Aplica o middleware de autenticação para as rotas abaixo
+routes.post('/products', upload.single('file'), ProductController.store); // Criar produto
+routes.get('/products', ProductController.index); // Listar produtos
 
 export default routes;
