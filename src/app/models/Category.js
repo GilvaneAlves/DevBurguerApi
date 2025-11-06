@@ -8,9 +8,14 @@ class Category extends Model {
             },
             {
                 sequelize,
-                tableName: 'categories'
-            },
+                tableName: 'categories',
+            }
         );
+        return this;
+    }
+
+    static associate(models) {
+        this.hasMany(models.Product, { foreignKey: 'category_id', as: 'products' });
     }
 }
 
