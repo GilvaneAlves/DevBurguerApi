@@ -20,9 +20,12 @@ routes.post('/session', SessionController.store); // Login
 // Produtos
 routes.use(authMidleware); // Aplica o middleware de autenticação para as rotas abaixo
 routes.post('/products', adminMiddleware, upload.single('file'), ProductController.store); // Criar produto
+routes.put('/products/:id', adminMiddleware, upload.single('file'), ProductController.update); // Atualizar produto
 routes.get('/products', ProductController.index); // Listar produtos
+
 // Categorias
-routes.post('/categories', adminMiddleware, CategoryController.store); // Criar categoria
+routes.post('/categories', adminMiddleware, upload.single('file'), CategoryController.store);// Criar categoria
+routes.put('/categories/:id', adminMiddleware, upload.single('file'), CategoryController.update);// Atualizar categoria
 routes.get('/categories', CategoryController.index); // Listar categorias
 
 export default routes;

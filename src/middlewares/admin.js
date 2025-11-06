@@ -1,5 +1,7 @@
 
 const adminMidleware = (request, response, next) => {
+    console.log('isUserAdmin:', request.userIsAdmin);
+
     const isUserAdmin = request.userIsAdmin;
 
     if (!isUserAdmin) {
