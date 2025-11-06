@@ -7,6 +7,7 @@ import multerConfig from './config/multer.cjs';
 import authMidleware from './middlewares/auth.js';
 import CategoryController from './app/controllers/CategoryController.js';
 import adminMiddleware from './middlewares/admin.js';
+import OrderController from './app/controllers/OrderController.js';
 
 const routes = new Router();
 
@@ -27,5 +28,9 @@ routes.get('/products', ProductController.index); // Listar produtos
 routes.post('/categories', adminMiddleware, upload.single('file'), CategoryController.store);// Criar categoria
 routes.put('/categories/:id', adminMiddleware, upload.single('file'), CategoryController.update);// Atualizar categoria
 routes.get('/categories', CategoryController.index); // Listar categorias
+
+
+routes.post('/orders', adminMiddleware, OrderController.store);
+
 
 export default routes;
