@@ -4,9 +4,9 @@ import SessionController from './app/controllers/SessionController.js';
 import ProductController from './app/controllers/ProductController.js';
 import multer from 'multer';
 import multerConfig from './config/multer.cjs';
-import authMidleware from './middlewares/auth.js';
+import authMidleware from './app/middlewares/auth.js';
 import CategoryController from './app/controllers/CategoryController.js';
-import adminMiddleware from './middlewares/admin.js';
+import adminMiddleware from './app/middlewares/admin.js';
 import OrderController from './app/controllers/OrderController.js';
 
 const routes = new Router();
@@ -16,7 +16,7 @@ const upload = multer({ storage: multerConfig.Storage });
 
 // Usuários
 routes.post('/users', UserController.store); // Criar usuário
-routes.post('/session', SessionController.store); // Login
+routes.post('/sessions', SessionController.store); // Login
 
 // Produtos
 routes.use(authMidleware); // Aplica o middleware de autenticação para as rotas abaixo
@@ -25,14 +25,13 @@ routes.put('/products/:id', adminMiddleware, upload.single('file'), ProductContr
 routes.get('/products', ProductController.index); // Listar produtos
 
 // Categorias
-routes.post('/categories', adminMiddleware, upload.single('file'), CategoryController.store);// Criar categoria
-routes.put('/categories/:id', adminMiddleware, upload.single('file'), CategoryController.update);// Atualizar categoria
+routes.post('/categories', adminMiddleware, upload.single('file'), CategoryController.store); // Criar categoria
+routes.put('/categories/:id', adminMiddleware, upload.single('file'), CategoryController.update); // Atualizar categoria
 routes.get('/categories', CategoryController.index); // Listar categorias
 
-
-routes.post('/orders', OrderController.store);
-routes.get('/orders', OrderController.index);
-routes.put('/orders/:id', adminMiddleware, OrderController.update);
-
+// Pedidos
+routes.post('/orders', OrderController.store); // Criar pedido
+routes.get('/orders', OrderController.index); // Listar pedidos
+routes.put('/orders/:id', adminMiddleware, OrderController.update); // Atualizar pedido
 
 export default routes;
