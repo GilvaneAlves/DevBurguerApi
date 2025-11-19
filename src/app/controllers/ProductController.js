@@ -3,87 +3,87 @@ import Product from '../models/Product.js';
 import Category from '../models/Category.js';
 
 class ProductController {
-    async store(request, response) {
-        const schema = Yup.object({
-            name: Yup.string().required(),
-            price: Yup.number().required(),
-            category_id: Yup.number().required(),
-            offer: Yup.boolean(),
-        });
+  async store(request, response) {
+    const schema = Yup.object({
+      name: Yup.string().required(),
+      price: Yup.number().required(),
+      category_id: Yup.number().required(),
+      offer: Yup.boolean(),
+    });
 
 
-        try {
-            schema.validateSync(request.body, { abortEarly: false });
-        } catch (validationError) {
-            return response.status(400).json({ error: validationError.errors });
-        }
-
-        const { name, price, category_id, offer } = request.body;
-        const { filename } = request.file;
-
-        const newProduct = await Product.create({
-            name,
-            price,
-            category_id,
-            path: filename,
-            offer,
-        });
-
-        return response.status(201).json({ newProduct });
+    try {
+      schema.validateSync(request.body, { abortEarly: false });
+    } catch (validationError) {
+      return response.status(400).json({ error: validationError.errors });
     }
-    async update(request, response) {
-        const schema = Yup.object({
-            name: Yup.string(),
-            price: Yup.number(),
-            category_id: Yup.number(),
-            offer: Yup.boolean(),
-        });
+
+    const { name, price, category_id, offer } = request.body;
+    const { filename } = request.file;
+
+    const newProduct = await Product.create({
+      name,
+      price,
+      category_id,
+      path: filename,
+      offer,
+    });
+
+    return response.status(201).json({ newProduct });
+  }
+  async update(request, response) {
+    const schema = Yup.object({
+      name: Yup.string(),
+      price: Yup.number(),
+      category_id: Yup.number(),
+      offer: Yup.boolean(),
+    });
 
 
-        try {
-            schema.validateSync(request.body, { abortEarly: false });
-        } catch (validationError) {
-            return response.status(400).json({ error: validationError.errors });
-        }
-
-        const { name, price, category_id, offer } = request.body;
-        const { id } = request.params;
-
-        let path
-        if (request.file) {
-            const { filename } = request.file;
-            path = filename;
-        }
-        await Product.update(
-            {
-                name,
-                price,
-                category_id,
-                path,
-                offer,
-            },
-            {
-                where: {
-                    id,
-                },
-            }
-        );
-
-        return response.status(200).json();
+    try {
+      schema.validateSync(request.body, { abortEarly: false });
+    } catch (validationError) {
+      return response.status(400).json({ error: validationError.errors });
     }
-    async index(request, response) {
-        const products = await Product.findAll({
-            include: {
-                model: Category,
-                as: 'category',
-                attributes: ['id', 'name'],
-            }
-        });
 
-        console.log(request.userId);
+    const { name, price, category_id, offer } = request.body;
+    const { id } = request.params;
 
-        return response.status(200).json(products);
+    let path;
+    if (request.file) {
+      const { filename } = request.file;
+      path = filename;
     }
+    await Product.update(
+      {
+        name,
+        price,
+        category_id,
+        path,
+        offer,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    return response.status(200).json();
+  }
+  async index(request, response) {
+    const products = await Product.findAll({
+      include: {
+        model: Category,
+        as: 'category',
+        attributes: ['id', 'name'],
+      }
+    });
+
+    console.log(request.userId);
+
+    return response.status(200).json(products);
+  }
 }
 
 export default new ProductController();

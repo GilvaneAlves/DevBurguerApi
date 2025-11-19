@@ -1,15 +1,15 @@
 
 const adminMidleware = (request, response, next) => {
-    console.log('isUserAdmin:', request.userIsAdmin);
+  console.log('isUserAdmin:', request.userIsAdmin);
 
-    const isUserAdmin = request.userIsAdmin;
+  const isUserAdmin = request.userIsAdmin;
 
-    if (!isUserAdmin) {
-        return response.status(401).json();
-    }
+  if (!isUserAdmin) {
+    return response.status(401).json();
+  }
 
 
-    return next();
-}
+  return next();
+};
 
 export default adminMidleware;
